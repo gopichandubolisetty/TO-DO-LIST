@@ -39,7 +39,7 @@ app.post('/add-task',async(req,res)=>{
 });
 
 // GET Route: Fetch all Tasks
-app.get('/get-task',async(req,res)=>{
+app.get('/get-tasks',async(req,res)=>{
     try{
         const allTasks = await todo.find({});
         res.status(200).json(allTasks);
@@ -66,14 +66,15 @@ app.put('/update-task/:id',async(req,res)=>{
 // DELETE Route: Remove a task
 app.delete('/delete-task/:id',async(req,res)=>{
     try{
-        const deleteTask = await todo.findIdAndDelete(req.params.id);
+        const deleteTask = await todo.findByIdAndDelete(req.params.id);
         if(!deleteTask) return res.status(404).json({message:"Task not found"});
 
         res.status(200).json({message:"Task deleted successfully"});
     }catch(error){
         res.status(500).json({message:"Error deleteing task",error:error.message});
     }
-})
+});
+
 
 // Tell the server to start listening for requests
 app.listen(PORT,()=>{
