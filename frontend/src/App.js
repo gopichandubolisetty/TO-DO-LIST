@@ -5,7 +5,8 @@ function App(){
 
 // 1. Define 'tasks' as state and 'setTasks' to update it. Initial value is an empty array [].
   const [tasks,setTasks] = useState([]);
-  
+  const [input,setInput] = useState("");
+
 
 // 2. This function runs when the component "mounts" (appears on screen)
   useEffect(()=>{
@@ -22,19 +23,46 @@ function App(){
     }
   };
 
+  const addTask = async()=>{
+    try{
+      const reponse = await axios.post('http://localhost:5000/add-task',{
+        task:input,
+        completed:flase
+      });
+      setTasks([...tasks,response.data]);
+      setInput("");
+    }catch(error){
+      console.log("Error adding task:",error);
+    }
+  };
+
   
   return(
     <div className="App">
       <h1>My MERN TO-Do List</h1>
+
+      <div style={{marginBottom: '20px'}}>
+        <input
+        value={input}
+        onchange={(e)=>setInput(e.target.value)}
+        placeholder="Enter a new task..."
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
       <ul>
         {tasks.map((item)=>(
           <li key={item.id}>
-            {item.task} - {item.completed ? "✅ Done" : "❌ Pending"}
+            {item.task}
+            <button onClick={() => deleteTask(item._id)} style={{margin:'10px'}}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
     </div>
   );
+
 }
 
 export default App;
