@@ -16,44 +16,73 @@ function App(){
   const fetchTasks = async()=>{
     try{
       const response = await axios.get('http://localhost:5000/get-tasks');
-
       setTasks(response.data);
     }catch(error){
-      console.log("Error fetching tasks:",error);
+      console.error("Error fetching tasks:",error);
     }
   };
 
-  const addTask = async()=>{
+  const toggleComplete = async(id,currentStatus)=>{
     try{
-      const reponse = await axios.post('http://localhost:5000/add-task',{
+      const response = await axios.put(`http://localhost:5000/update-task/${id}`,{
+        completed:!currentStatus
+      });
+      const updateTasks = tasks.map((task)=>task._id===id?response.data : task);
+      setTasks(updateTasks);
+    }catch(error){
+      console.log("Error updating task:",error);
+    }
+  }
+  const addTask = async()=>{
+    if(!input) return;
+    try{
+      const response = await axios.post('http://localhost:5000/add-task',{
         task:input,
-        completed:flase
+        completed:false
       });
       setTasks([...tasks,response.data]);
       setInput("");
     }catch(error){
-      console.log("Error adding task:",error);
+      console.error("Error adding task:",error);
     }
   };
 
-  
+  const deleteTask = async(id)=>{
+    try{
+      await axios.delete(`http://localhost:5000/delete-task/${id}`);
+      const updateTasks = tasks.filter((task)=> task._id!==id);
+      setTasks(updateTasks);
+    }catch(error){
+      console.error("Error deleting task",error);
+    }
+  };
+
+
+
+
   return(
-    <div className="App">
+    <div style={{padding:'40px' , fontFamily:'Arial'}}>
       <h1>My MERN TO-Do List</h1>
 
       <div style={{marginBottom: '20px'}}>
         <input
         value={input}
-        onchange={(e)=>setInput(e.target.value)}
+        onChange={(e)=>setInput(e.target.value)}
         placeholder="Enter a new task..."
         />
-        <button onClick={addTask}>Add Task</button>
+        <button onClick={addTask} style={{padding:'10px',marginLeft:'5px',cursor:'pointer'}}>Add Task</button>
       </div>
 
-      <ul>
+      <ul style={{listStyle:'none',padding:0}}> 
         {tasks.map((item)=>(
-          <li key={item.id}>
-            {item.task}
+          <li key={item._id} style={{
+            marginBottom:'10px',
+            textDecoration: item.completed ? 'line-through' : 'none',
+            color:item.completed ? 'grey' : 'black'
+            }}>
+            <span style={{fontSize:'18px',cursor:'pointer'}} onClick={()=> toggleComplete(item._id,item.completed)} >
+              {item.task}
+            </span>
             <button onClick={() => deleteTask(item._id)} style={{margin:'10px'}}>
               Delete
             </button>
