@@ -62,7 +62,9 @@ function App(){
 
   return(
     <div style={{padding:'40px' , fontFamily:'Arial'}}>
-      <h1>My MERN TO-Do List</h1>
+      <h1 className="text-3xl font-bold underline text-blue-600">
+  Hello Tailwind!
+</h1>
 
       <div style={{marginBottom: '20px'}}>
         <input
