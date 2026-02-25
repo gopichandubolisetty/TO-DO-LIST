@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err)=>console.error("Could not connect to MongoDB:",err));
 
 // When someone visits http://localhost:5000/, this function runs
-app/use('/api',todoRoutes);
+app.use('/api',todoRoutes);
 
 // Tell the server to start listening for requests
 app.listen(PORT,()=>{
