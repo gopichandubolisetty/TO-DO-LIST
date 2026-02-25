@@ -9,7 +9,7 @@ exports.getTasks = async(req,res)=>{
     }
 };
 
-exports.addTasks = async(req,res)=>{
+exports.addTask = async(req,res)=>{
     try{
         const newTask = new Todo(req.body);
         const saved = await newTask.save();
