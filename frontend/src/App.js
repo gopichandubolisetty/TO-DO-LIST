@@ -63,38 +63,36 @@ function App(){
 
   return(
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10">
-  <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-    <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">Task Manager</h1>
-    
-    {/* Input Area */}
-    <div className="flex gap-2 mb-8">
-      <input 
-        className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Add a new task..."
-      />
-      <button onClick={addTask} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-        Add
-      </button>
-    </div>
+      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+        <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">Task Manager</h1>
+        <div className="flex gap-2 mb-8">
+          <input
+          className="flex-1 border rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500"
+          placeholder="Add a new task.."
+          value={input}
+          onChange={(e)=>setInput(e.target.value)}
+          />
+          <button
+          onClick={addTask} 
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            Add
+          </button>
+        </div>
 
-    {/* Task List using the Component */}
-    <div className="space-y-2">
-      {tasks.map((item) => (
-        <TodoCard 
-          key={item._id} 
-          task={item.task} 
-          completed={item.completed} 
-          onToggle={() => toggleComplete(item._id, item.completed)}
-          onDelete={() => deleteTask(item._id)}
-        />
-      ))}
+        <div className="space-y-2">
+          {tasks.map((item)=>(
+            <TodoCard
+            key={item._id}
+            task={item.task}
+            completed={item.completed}
+            onToggle={()=>toggleComplete(item._id,item.completed)}
+            onDelete={()=>deleteTask(item._id)}
+            />
+          ))}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
-
 }
 
 export default App;

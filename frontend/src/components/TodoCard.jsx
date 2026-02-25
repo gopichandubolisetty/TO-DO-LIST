@@ -1,3 +1,5 @@
+import React from 'react';
+
 const TodoCard = ({ task, completed, onToggle, onDelete }) => {
   return (
     <div className="flex items-center justify-between p-4 mb-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all">
